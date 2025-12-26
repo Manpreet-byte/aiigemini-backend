@@ -1,11 +1,17 @@
 import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
-  // CORS headers
-  const allowedOrigin = process.env.ALLOWED_ORIGIN || 'https://aiigemini-frontend.vercel.app';
+  // CORS headers - allow both preview and production URLs
+  const origin = req.headers.origin || '';
+  const allowedOrigins = [
+    process.env.ALLOWED_ORIGIN || 'https://aiigemini-frontend.vercel.app',
+    'https://aiigemini-frontend-k5jhx4qqq-manpreet-kaurs-projects-902ec182.vercel.app'
+  ];
+  
+  const isAllowed = allowedOrigins.some(allowed => origin.includes('aiigemini-frontend') || origin === allowed);
   
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  res.setHeader('Access-Control-Allow-Origin', isAllowed ? origin : allowedOrigins[0]);
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
