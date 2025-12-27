@@ -7,13 +7,12 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || 'http://localhost:5174';
 
-app.use(cors({
-  origin: ALLOWED_ORIGIN,
-  credentials: true,
-}));
+app.use(cors());
+app.options("*", cors());
+
 app.use(express.json({ limit: '10mb' }));
+
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_TEXT_MODEL = process.env.GEMINI_TEXT_MODEL || 'gemini-2.5-flash-preview-09-2025';
